@@ -43,13 +43,13 @@ while gra_dziala:
         if zdarzenie.type == pygame.KEYDOWN:
             if zdarzenie.key == pygame.K_ESCAPE:
                 gra_dziala = False
-            if zdarzenie.key == pygame.K_w:
+            if zdarzenie.key == pygame.K_w or zdarzenie.key == pygame.K_UP:
                 waz.zmien_kierunek(Kierunek.GORA)
-            if zdarzenie.key == pygame.K_s:
+            if zdarzenie.key == pygame.K_s or zdarzenie.key == pygame.K_DOWN:
                 waz.zmien_kierunek(Kierunek.DOL)
-            if zdarzenie.key == pygame.K_a:
+            if zdarzenie.key == pygame.K_a or zdarzenie.key == pygame.K_LEFT:
                 waz.zmien_kierunek(Kierunek.LEWO)
-            if zdarzenie.key == pygame.K_d:
+            if zdarzenie.key == pygame.K_d or zdarzenie.key == pygame.K_RIGHT:
                 waz.zmien_kierunek(Kierunek.PRAWO)
             if zdarzenie.key == pygame.K_o:
                 event_timer += 10
@@ -81,6 +81,10 @@ while gra_dziala:
     # rysowanie semgentów
     for segment in waz.segmenty:
         ekran.blit(segment.obraz, segment.pozycja)
+
+    # spradzenie czy gra sie skonczyla
+    if waz.sprawdz_kolizje():
+        gra_dziala = False
 
     pygame.display.flip()
     zegar.tick(30)
