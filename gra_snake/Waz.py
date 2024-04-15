@@ -1,18 +1,25 @@
 import pygame
+import copy
 from Kierunek import Kierunek
+from Segment import Segment
+
 
 class Waz(pygame.sprite.Sprite):
     def __init__(self):
-        #oryginalny obraz glowy
+        # oryginalny obraz glowy
         self.oryginalny_obraz = pygame.image.load("images/head.png")
-        #obraz pomocniczny, bedzie sie on zmienial przy zmienie kierunku gracza
+        # obraz pomocniczny, bedzie sie zmienial przy zmianie kierunku gracza
         self.obraz = pygame.transform.rotate(self.oryginalny_obraz, 0)
-        #wspolrzednie glowy
+        # wspolrzednie glowy
         self.rect = self.obraz.get_rect(center=(12*32+16, 9*32+16))
-        #zmienne odpowiedzialne za kierunek, oraz nowy wyznaczony kierunek
+        # zmienne odpowiedzialne za kierunek, oraz nowy wyznaczony kierunek
         self.kierunek = Kierunek.GORA
         self.nowy_kierunek = Kierunek.GORA
-        self.dlugosc=0
+        self.dlugosc = 0
+
+        self.ostatnia_pozycja = self.rect
+        self.dodaj_segment = False
+        self.segmenty = []
 
     def zmien_kierunek(self, kierunek):
         zmiana_mozliwa = True
@@ -24,13 +31,16 @@ class Waz(pygame.sprite.Sprite):
             zmiana_mozliwa = False
         if kierunek == Kierunek.PRAWO and self.kierunek == Kierunek.LEWO:
             zmiana_mozliwa = False
-        if zmiana_mozliwa: 
+        if zmiana_mozliwa:
             self.nowy_kierunek = kierunek
 
     def aktualizuj(self):
         self.kierunek = self.nowy_kierunek
         self.obraz = pygame.transform.rotate(self.oryginalny_obraz, (self.kierunek.value*-90))
 
+        self.ostatnia_pozycja = copy.deepcopy(self.rect)
+
+        # przesuwanie głowy
         if self.kierunek == Kierunek.GORA:
             self.rect.move_ip(0, -32)
         if self.kierunek == Kierunek.PRAWO:
@@ -40,10 +50,28 @@ class Waz(pygame.sprite.Sprite):
         if self.kierunek == Kierunek.DOL:
             self.rect.move_ip(0, 32)
 
+        # przesuwanie segmentów
+        liczba_segmentów = len(self.segmenty)
+        for i in range(liczba_segmentów):
+            if i == 0:
+                self.segmenty[i].przesun(self.ostatnia_pozycja)
+            else:
+                self.segmenty[i].przesun(self.segmenty[i-1].ostatnia_pozycja)
+
+        if self.dodaj_segment is True:
+            nowy_segment = Segment()
+
+            if len(self.segmenty) > 0:
+                nowa_pozycja = copy.deepcopy(self.segmenty[-1].pozycja)
+            else:
+                nowa_pozycja = copy.deepcopy(self.ostatnia_pozycja)
+            nowy_segment.pozycja = nowa_pozycja
+            self.segmenty.append(nowy_segment)
+            self.dodaj_segment = False
+
+
     def jedz_jablko(self):
         # Tutaj powinna być logika zwiększająca rozmiar węża po zjedzeniu jabłka
         # Na przykład:
         self.dlugosc += 1
         # Możesz także chcieć zwiększyć punkty gracza lub wykonać inne akcje związane z jedzeniem jabłka.
-
-        

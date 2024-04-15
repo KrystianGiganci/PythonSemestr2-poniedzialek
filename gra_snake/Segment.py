@@ -1,10 +1,11 @@
 import pygame
 import copy
 
+
 class Segment(pygame.sprite.Sprite):
     def __init__(self, kolor, pozycja):
         super().__init__()
-        self.obraz = pygame.Surface([32, 32])
+        self.obraz = pygame.image.load("images/segment.png")
         self.pozycja = pygame.Rect(-32, -32, 32, 32)
         self.ostatania_pozycja = None
 
