@@ -58,6 +58,7 @@ class Waz(pygame.sprite.Sprite):
             else:
                 self.segmenty[i].przesun(self.segmenty[i-1].ostatnia_pozycja)
 
+        # dodawanie segmentu
         if self.dodaj_segment is True:
             nowy_segment = Segment()
 
@@ -69,9 +70,6 @@ class Waz(pygame.sprite.Sprite):
             self.segmenty.append(nowy_segment)
             self.dodaj_segment = False
 
-
     def jedz_jablko(self):
-        # Tutaj powinna być logika zwiększająca rozmiar węża po zjedzeniu jabłka
-        # Na przykład:
         self.dlugosc += 1
-        # Możesz także chcieć zwiększyć punkty gracza lub wykonać inne akcje związane z jedzeniem jabłka.
+        self.dodaj_segment = True

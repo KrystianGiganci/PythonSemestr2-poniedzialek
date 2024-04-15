@@ -78,6 +78,9 @@ while gra_dziala:
     # rysowanie jablek
     for jablko in jablka:
         ekran.blit(jablko.obraz, jablko.rect)
+    # rysowanie semgentów
+    for segment in waz.segmenty:
+        ekran.blit(segment.obraz, segment.pozycja)
 
     pygame.display.flip()
     zegar.tick(30)
