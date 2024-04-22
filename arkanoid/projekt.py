@@ -25,7 +25,11 @@ while gra_dziala:
             gra_dziala = False
 
     # sterowanie platformą
-    # TODO
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+        platforma.ruszaj_platforma(-1)
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        platforma.ruszaj_platforma(1)
 
     # wyświetlanie tła
     ekran.blit(obraz_tla, (0, 0))
