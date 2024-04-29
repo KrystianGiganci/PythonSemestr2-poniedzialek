@@ -19,3 +19,8 @@ class Klocek(pygame.sprite.Sprite):
             maska_koloru = (0, 0, 128)
         self.obraz = copy.copy(self.obraz_oryginalny)
         self.obraz.fill(maska_koloru, special_flags=pygame.BLEND_ADD)
+
+    def uderzenie(self):
+        self.zdrowie -= 1
+        if self.zdrowie <= 0:
+            self.kill()

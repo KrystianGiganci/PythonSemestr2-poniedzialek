@@ -23,12 +23,12 @@ class Kulka(pygame.sprite.Sprite):
         self.wektor.rotate_ip(self.kat_nachylenia)
         self.przegrana = False
 
-    def aktualizuj(self, platforma):
+    def aktualizuj(self, platforma, klocki):
         self.wspolrzedne += self.wektor
         self.pozycja.center = self.wspolrzedne
-        self.sprawdz_kolizje(platforma)
+        self.sprawdz_kolizje(platforma, klocki)
 
-    def sprawdz_kolizje(self, platforma):
+    def sprawdz_kolizje(self, platforma, klocki):
         # kolizja z krawędzią ekranu
         if self.pozycja.x <= 0:
             self.wektor.x *= -1
@@ -47,3 +47,8 @@ class Kulka(pygame.sprite.Sprite):
                 self.wektor.x = -10
             if self.wektor.x > 10:
                 self.wektor.x = 10
+
+        # kolicja z klockami
+        for klocek in klocki:
+            # sprawdzić czy wystąpiła kolizja
+            # TODO
