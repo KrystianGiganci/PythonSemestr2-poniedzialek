@@ -5,11 +5,14 @@ from Kulka import Kulka
 # wysokość i szerokość ekranu
 SZEROKOSC_EKRANU = 1024
 WYSOKOSC_EKRANU = 800
+ZYCIA = 3
 
 # ustawienia pygame
 pygame.init()
+pygame.font.init()
 
-# obiekty ekranu, zegara i tła
+# obiekty czcionki, ekranu, zegara i tła
+czcionka = pygame.font.SysFont("Comic Sans MS", 24)
 ekran = pygame.display.set_mode([SZEROKOSC_EKRANU, WYSOKOSC_EKRANU])
 zegar = pygame.time.Clock()
 obraz_tla = pygame.image.load('arkanoid/images/background.png')
@@ -38,6 +41,13 @@ while gra_dziala:
     kulka.aktualizuj(platforma)
     platforma.aktualizuj()
 
+    if kulka.przegrana:
+        ZYCIA -= 1
+        if ZYCIA <= 0:
+            break
+        kulka.zresetuj_pozycje()
+        platforma.zresetuj_pozycje()
+
     # wyświetlanie tła
     ekran.blit(obraz_tla, (0, 0))
 
@@ -45,7 +55,12 @@ while gra_dziala:
     ekran.blit(platforma.obraz, platforma.pozycja)
     ekran.blit(kulka.obraz, kulka.pozycja)
 
+    # wyświetlanie liczby żyć
+    tekst = czcionka.render(f'Pozostałe życia: {ZYCIA}', False, (255, 181, 33))
+    ekran.blit(tekst, (16, 16))
+
     pygame.display.flip()
     zegar.tick(30)
+# ---------------------------------
 
 pygame.quit()

@@ -40,4 +40,10 @@ class Kulka(pygame.sprite.Sprite):
             self.przegrana = True
 
         # kolizja z platformą
-        # TODO
+        if self.pozycja.colliderect(platforma.pozycja):
+            self.wektor.y *= -1
+            self.wektor.x += platforma.porusza_sie*5
+            if self.wektor.x < -10:
+                self.wektor.x = -10
+            if self.wektor.x > 10:
+                self.wektor.x = 10
